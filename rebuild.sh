@@ -20,3 +20,5 @@ sudo nixos-rebuild switch --flake ./nix &>nixos-switch.log || (cat nixos-switch.
 
 # Get current generation metadata
 current=$(nixos-rebuild list-generations | grep current)
+
+git commit -am "$current"

@@ -24,6 +24,7 @@
             config.allowUnfree = true;
           };
         };
+        #adding a comment to test the script
         modules = [./valkyrie/configuration.nix];
       };
     };
