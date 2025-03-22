@@ -3,19 +3,17 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
-  pkgs, 
+  pkgs,
   unstable,
   ...
-}:
-
-{
+}: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
   imports = [
     ./hardware-configuration.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
-  
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -23,7 +21,7 @@
   networking.hostName = "valkyrie";
   #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-
+  #add comment to test
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -47,7 +45,6 @@
 
   services.xserver.enable = false;
   services.displayManager.sddm.wayland.enable = true;
-
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -100,7 +97,6 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  
   #enables printer discovery
   services.avahi = {
     enable = true;
@@ -189,7 +185,7 @@
   fonts.packages = with pkgs; [
     (nerdfonts.override {fonts = ["Hack" "JetBrainsMono"];})
   ];
-  
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -214,7 +210,6 @@
 
   virtualisation.docker.enable = false;
   services.flatpak.enable = true;
-
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [25565];
