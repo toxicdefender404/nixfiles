@@ -21,7 +21,6 @@
   networking.hostName = "valkyrie";
   #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  #add comment to test
   # Enable networking
   networking.networkmanager.enable = true;
 

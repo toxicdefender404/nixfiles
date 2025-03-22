@@ -14,9 +14,7 @@
   }: let
     lib = nixpkgs.lib;
     system = "x86_64-linux";
-    
   in {
-    
     nixosConfigurations = {
       valkyrie = lib.nixosSystem {
         inherit system;
@@ -26,7 +24,7 @@
             config.allowUnfree = true;
           };
         };
-        modules = [./configuration.nix];
+        modules = [./valkyrie/configuration.nix];
       };
     };
   };
