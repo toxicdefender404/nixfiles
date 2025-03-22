@@ -18,7 +18,7 @@
   in {
     
     nixosConfigurations = {
-      nixos = lib.nixosSystem {
+      valkyrie = lib.nixosSystem {
         inherit system;
         specialArgs = {
           unstable = import nixpkgs-unstable {

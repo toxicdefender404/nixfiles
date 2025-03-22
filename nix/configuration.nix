@@ -149,7 +149,6 @@
       tmux
       steamcmd
       qmk
-      git
       python39
       ungoogled-chromium
       tradingview
@@ -203,6 +202,8 @@
     alacritty
     alejandra
     kate
+    git
+    git-credential-keepassxc
   ];
 
   services.dbus.packages = with pkgs; [xdg-desktop-portal-kde];
