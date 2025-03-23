@@ -8,22 +8,23 @@ if [ -z "$tracked_changes" ] && [ -z "$untracked_files" ]; then
   exit 0
 fi
 
-
-alejandra . &>/dev/null \
-  || ( alejandra . ; echo "formatting failed!" && exit 1)
-
-echo "Staged changes:"
+git add ./nix/
 git diff -U0 --shortstat
 
-echo "NixOS Rebuilding..."
 
-git add ./nix/
+alejandra . &>/dev/null || { alejandra . ; echo "formatting failed!" && exit 1; }
 
-# rebuild and output simplified errors
-sudo nixos-rebuild switch --flake ./nix &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+nix_changes=$(echo "$tracked_changes" | grep '^nix/')
+nix_untracked=$(echo "$untracked_files" | grep '^nix/')
 
+if [ -n "$nix_changes" ] || [ -n "$nix_untracked" ]; then
+  echo "Rebuilding..."
+  
+  sudo nixos-rebuild switch --flake ./nix &>nixos-switch.log || \
+    { cat nixos-switch.log | grep --color error && exit 1; }
+else
+  echo "skipping rebuild"
+fi
 
-# Get current generation metadata for commit message
 current=$(nixos-rebuild list-generations | grep current)
-
 git commit -am "$current"
