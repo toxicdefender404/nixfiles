@@ -11,18 +11,12 @@
     nixpkgs,
     nixpkgs-unstable,
     ...
-  }: let
-    lib = nixpkgs.lib;
-    system = "x86_64-linux";
-  in {
+  }: {
     nixosConfigurations = {
-      valkyrie = lib.nixosSystem {
-        inherit system;
+      valkyrie = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
         specialArgs = {
-          unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-          };
+          inherit nixpkgs-unstable;
         };
         modules = [./hosts/valkyrie/configuration.nix];
       };

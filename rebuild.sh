@@ -13,7 +13,7 @@ alejandra . &>/dev/null \
   || ( alejandra . ; echo "formatting failed!" && exit 1)
 
 echo "Staged changes:"
-git diff --staged -U0
+git diff -U0
 
 echo "NixOS Rebuilding..."
 

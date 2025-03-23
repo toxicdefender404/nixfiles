@@ -4,9 +4,14 @@
 {
   config,
   pkgs,
-  unstable,
+  nixpkgs-unstable,
   ...
-}: {
+}: let
+  unstable = import nixpkgs-unstable {
+    system = pkgs.system;
+    config.allowUnfree = true;
+  };
+in {
   nix.settings.experimental-features = ["nix-command" "flakes"];
   imports = [
     ./hardware-configuration.nix
