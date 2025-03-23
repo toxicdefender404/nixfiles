@@ -17,10 +17,11 @@ git diff --staged -U0
 
 echo "NixOS Rebuilding..."
 
+git add ./nix/
+
 # rebuild and output simplified errors
 sudo nixos-rebuild switch --flake ./nix &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
 
-git add ./nix/
 
 # Get current generation metadata for commit message
 current=$(nixos-rebuild list-generations | grep current)

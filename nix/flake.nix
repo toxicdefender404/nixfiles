@@ -24,7 +24,7 @@
             config.allowUnfree = true;
           };
         };
-        modules = [./valkyrie/configuration.nix];
+        modules = [./hosts/valkyrie/configuration.nix];
       };
     };
   };
