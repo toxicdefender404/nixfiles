@@ -8,9 +8,9 @@ if [ -z "$tracked_changes" ] && [ -z "$untracked_files" ]; then
   exit 0
 fi
 
+#commented because it doesn't work how i want idk?
+#git diff -U0 --shortstat
 git add ./nix/
-git diff -U0 --shortstat
-
 
 alejandra . &>/dev/null || { alejandra . ; echo "formatting failed!" && exit 1; }
 

@@ -3,22 +3,23 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    ...
-  }: {
+  outputs = {self, ...} @ inputs: {
     nixosConfigurations = {
-      einherjar = nixpkgs.lib.nixosSystem {
+      einherjar = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit nixpkgs-unstable;
+          inherit inputs;
         };
-        modules = [./hosts/einherjar/configuration.nix];
+        modules = [
+          ./hosts/einherjar/configuration.nix
+        ];
       };
     };
   };

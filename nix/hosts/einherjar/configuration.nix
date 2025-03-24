@@ -4,10 +4,10 @@
 {
   config,
   pkgs,
-  nixpkgs-unstable,
+  inputs,
   ...
 }: let
-  unstable = import nixpkgs-unstable {
+  unstable = import inputs.nixpkgs-unstable {
     system = pkgs.system;
     config.allowUnfree = true;
   };
@@ -15,11 +15,22 @@ in {
   nix.settings.experimental-features = ["nix-command" "flakes"];
   imports = [
     ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.default
   ];
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+
+    extraSpecialArgs = {inherit inputs;};
+    users = {
+      toxicdefender404 = import ../../modules/home.nix;
+    };
+  };
 
   nixpkgs.config.allowUnfree = true;
 
-  # Bootloader.
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -29,10 +40,10 @@ in {
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
+  # Set your time zone
   time.timeZone = "Europe/London";
 
-  # Select internationalisation properties.
+  # Select internationalisation properties
   i18n.defaultLocale = "en_GB.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -50,7 +61,7 @@ in {
   services.xserver.enable = false;
   services.displayManager.sddm.wayland.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
+  # Enable the KDE Plasma Desktop Environment
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
@@ -181,10 +192,6 @@ in {
   };
 
   virtualisation.waydroid.enable = true;
-
-  environment.shellAliases = {
-    sup = "sudo alejandra /etc/nixos/configuration.nix && sudo nixos-rebuild switch --upgrade";
-  };
 
   fonts.packages = with pkgs; [
     (nerdfonts.override {fonts = ["Hack" "JetBrainsMono"];})
