@@ -13,12 +13,12 @@
     ...
   }: {
     nixosConfigurations = {
-      valkyrie = nixpkgs.lib.nixosSystem {
+      einherjar = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit nixpkgs-unstable;
         };
-        modules = [./hosts/valkyrie/configuration.nix];
+        modules = [./hosts/einherjar/configuration.nix];
       };
     };
   };
