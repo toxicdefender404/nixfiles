@@ -75,6 +75,11 @@ in {
     variant = "";
   };
 
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [nvidia-vaapi-driver];
+  };
+
   hardware.nvidia = {
     # Modesetting is required.
     modesetting.enable = true;
@@ -152,7 +157,7 @@ in {
       obs-studio
       mpv
       unstable.vscode
-      discord
+      discord-ptb
       ventoy
       tor-browser
       terraria-server
@@ -200,7 +205,6 @@ in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    unstable.librewolf
     gparted
     wget
     fastfetch
