@@ -80,23 +80,19 @@ in {
     extraPackages = with pkgs; [nvidia-vaapi-driver];
   };
 
+  services.xserver.videoDrivers = ["nvidia"];
+
   hardware.nvidia = {
-    # Modesetting is required.
     modesetting.enable = true;
 
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
     powerManagement.enable = false;
 
-    # Fine-grained power management. Turns off GPU when not in use. (apparently experimental)
     powerManagement.finegrained = false;
 
-    # whether to use nvidia open source kernel module (apparently unstable)
     open = false;
 
-    # nvidia-settings command.
     nvidiaSettings = true;
 
-    # specify driver version
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
     prime = {
@@ -105,6 +101,7 @@ in {
         enable = true;
         enableOffloadCmd = true;
       };
+
       # get values via nix shell nixpkgs#pciutils -c lspci -d ::03xx
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
