@@ -15,6 +15,7 @@ in {
   nix.settings.experimental-features = ["nix-command" "flakes"];
   imports = [
     ./hardware-configuration.nix
+    ./graphics.nix
     inputs.home-manager.nixosModules.default
   ];
 
@@ -24,13 +25,12 @@ in {
 
     extraSpecialArgs = {inherit inputs;};
     users = {
-      toxicdefender404 = import ../../modules/home.nix;
+      toxicdefender404.imports = [../../modules/home.nix];
     };
   };
 
   nixpkgs.config.allowUnfree = true;
 
-  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -75,39 +75,6 @@ in {
     variant = "";
   };
 
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [nvidia-vaapi-driver];
-  };
-
-  services.xserver.videoDrivers = ["nvidia"];
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-
-    powerManagement.enable = false;
-
-    powerManagement.finegrained = false;
-
-    open = false;
-
-    nvidiaSettings = true;
-
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-
-    prime = {
-      #integrated graphics by default, run nvidia-offload to use dedicated
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-
-      # get values via nix shell nixpkgs#pciutils -c lspci -d ::03xx
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-    };
-  };
-
   # Configure console keymap
   console.keyMap = "uk";
 
@@ -143,6 +110,7 @@ in {
     description = "toxicdefender404";
     extraGroups = ["networkmanager" "wheel" "dialout" "users"];
     packages = with pkgs; [
+      librewolf
       (prismlauncher.override
         {
           additionalLibs = [glfw3-minecraft];
@@ -180,6 +148,7 @@ in {
       brave
       protonvpn-gui
       waydroid
+      ffmpeg
     ];
   };
 
@@ -193,7 +162,7 @@ in {
     dedicatedServer.openFirewall = true;
   };
 
-  virtualisation.waydroid.enable = true;
+  virtualisation.waydroid.enable = false;
 
   fonts.packages = with pkgs; [
     (nerdfonts.override {fonts = ["Hack" "JetBrainsMono"];})
